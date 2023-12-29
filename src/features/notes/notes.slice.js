@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { selectSearchTerm } from '../search/search.slice';
 
 const initialState = {
   notes: [
@@ -29,5 +30,14 @@ const options = {
 const notesSlice = createSlice(options);
 
 export const { addNote, removeNote } = notesSlice.actions;
-
+export const selectAllNotes = (state) => state.notes.notes;
 export default notesSlice.reducer;
+
+export const selectFilteredNotes = (state) => {
+  const notes = selectAllNotes(state);
+  const searchTerm = selectSearchTerm(state);
+
+  return notes.filter((item) =>
+    item.note.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+};
